@@ -786,7 +786,7 @@ function renderPage1(){
   kpis.innerHTML = '';
   kpis.appendChild(kpiCard('users', COLORS.navy, fmtInt(k.vidas_ativas), 'VIDAS ATIVAS', 'Total de beneficiários'));
   kpis.appendChild(kpiCard('building', COLORS.navy2, fmtInt(k.empresarial), 'EMPRESARIAL', `${fmtPct(k.empresarial_pct)} do total de vidas`));
-  kpis.appendChild(kpiCard('heart', COLORS.teal, fmtInt(k.adesao), 'ADESÃO', `${fmtPct(k.adesao_pct)} do total de vidas`));
+  kpis.appendChild(kpiCard('heart', COLORS.teal, fmtInt(k.adesao), 'ADESÃO / INDIVIDUAL', `${fmtPct(k.adesao_pct)} do total de vidas`));
   kpis.appendChild(kpiCard('plus', COLORS.orange, `+${fmtInt(k.inclusoes_junho)}`, 'INCLUSÕES NO PERÍODO', k.inclusoes_junho_obs));
 
   const cc = p.composicao_carteira;
