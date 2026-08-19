@@ -438,7 +438,7 @@
         </div>
       </div>
       <div class="card">
-        <div class="card-title" id="p1IncDiaTitle">Inclusões Adesão por Dia</div>
+        <div class="card-title" id="p1IncDiaTitle">Inclusões Individual por Dia</div>
         <div class="chart-box" style="height:150px;"><canvas id="p1BarInclusoes"></canvas></div>
         <div class="entrada-hoje">
           <div class="entrada-hoje-label">Entradas (Hoje)</div>
@@ -453,7 +453,7 @@
         <div class="destaques-list" id="p1Destaques"></div>
       </div>
       <div class="card">
-        <div class="card-title" id="p1VendasTitle">Vendas Adesão por Produto</div>
+        <div class="card-title" id="p1VendasTitle">Vendas Individual por Produto</div>
         <div class="table-scroll"><table class="dash-table" id="p1VendasTable"></table></div>
         <div class="rank-row" id="p1Ranking"></div>
         <div class="stat-row" id="p1Stats"></div>
@@ -941,9 +941,9 @@ function renderPage1(){
     const nomes = {'01':'Jan','02':'Fev','03':'Mar','04':'Abr','05':'Mai','06':'Jun','07':'Jul','08':'Ago','09':'Set','10':'Out','11':'Nov','12':'Dez'};
     return nomes[m] || m;
   });
-  document.getElementById('p1IncDiaTitle').textContent = `Inclusões Adesão por Dia — ${mesesGrafico.join('+')}/${anoRef}`;
+  document.getElementById('p1IncDiaTitle').textContent = `Inclusões Individual por Dia — ${mesesGrafico.join('+')}/${anoRef}`;
   document.getElementById('p1ConsultorTitle').textContent = `Vendas por Consultor — ${anoRef}`;
-  document.getElementById('p1VendasTitle').textContent = `Vendas Adesão por Produto — ${anoRef}`;
+  document.getElementById('p1VendasTitle').textContent = `Vendas Individual por Produto — ${anoRef}`;
   document.getElementById('p1IncMesTipoTitle').textContent = `Inclusões por Mês e Tipo — ${anoRef}`;
   document.getElementById('p1ValorIncTitle').textContent = `Valor das Inclusões por Mês e Tipo — ${anoRef}`;
 }
