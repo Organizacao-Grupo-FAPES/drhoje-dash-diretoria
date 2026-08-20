@@ -173,9 +173,6 @@ empresarial = len(active_df[active_df['tipo_contrato'] == 'EMPRESARIAL'])
 adesao = len(active_df[active_df['tipo_contrato'] == 'ADESÃO'])
 empresarial_pct = round((empresarial / vidas_ativas) * 100, 1) if vidas_ativas > 0 else 0.0
 adesao_pct = round((adesao / vidas_ativas) * 100, 1) if vidas_ativas > 0 else 0.0
-s1_active_df = active_df[active_df['nome'].astype(str).str.upper().str.contains('S1 OPERADORA|SI OPERADORA', na=False)]
-s1_active_vidas = len(s1_active_df)
-s1_active_pct_emp = round((s1_active_vidas / empresarial) * 100, 1) if empresarial > 0 else 0.0
 
 # Current period (last two months, e.g. June + July 2026)
 current_period_keys = [months_keys[-2], months_keys[-1]] if len(months_keys) >= 2 else [months_keys[-1]]
@@ -386,9 +383,7 @@ pagina1_data = {
         "empresarial": empresarial,
         "empresarial_pct": empresarial_pct,
         "adesao": adesao,
-        "adesao_pct": adesao_pct,
-        "s1_vidas": s1_active_vidas,
-        "s1_pct_empresarial": s1_active_pct_emp
+        "adesao_pct": adesao_pct
     },
     "inclusoes_por_dia_junho": inclusoes_por_dia_junho,
     "destaques_periodo": [
