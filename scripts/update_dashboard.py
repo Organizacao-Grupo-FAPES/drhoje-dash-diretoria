@@ -25,10 +25,21 @@ credentials = {
     "cd_empresa": os.environ.get("SALUSTECH_COMPANY", "")
 }
 
-print("Iniciando login no Salustech...")
+print("Iniciando login no Salustech...", flush=True)
 session = requests.Session()
-login_response = session.post(LOGIN_URL, data=credentials)
-print("Status do Login:", login_response.status_code)
+login_success = False
+for attempt in range(1, 4):
+    try:
+        login_response = session.post(LOGIN_URL, data=credentials, timeout=30)
+        print(f"Status do Login: {login_response.status_code}", flush=True)
+        if login_response.status_code == 200:
+            login_success = True
+            break
+    except Exception as e:
+        print(f"Erro no login (tentativa {attempt}): {e}", flush=True)
+
+if not login_success:
+    print("Aviso: Falha ao autenticar no Salustech.", flush=True)
 
 params = {
     "search": "",

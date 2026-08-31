@@ -5,6 +5,7 @@ cd /d "c:\Users\marcelo.guedes\Grupo Fapes Projetos\Dr Hoje\dr-hoje-dashboard"
 
 if not exist "data" mkdir "data"
 set LOGFILE=data\execucao_atualizacao.log
+set PYTHONUNBUFFERED=1
 
 echo ======================================================== >> %LOGFILE%
 echo [%DATE% %TIME%] INICIANDO ATUALIZACAO LOCAL - DIRETORIA >> %LOGFILE%
