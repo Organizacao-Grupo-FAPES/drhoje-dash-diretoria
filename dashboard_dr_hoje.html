@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DR. HOJE — Dashboard Executivo</title>
+<link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+<link rel="manifest" href="assets/site.webmanifest">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js"></script>
+<link rel="stylesheet" href="assets/css/dashboard.css">
+
+</head>
+
+<body>
+
+<!-- Authentication Overlay Screen -->
+<div id="login-overlay">
+  <div class="login-card">
+    <img src="assets/img/logo-login.png" alt="DR. HOJE" style="height: 48px; width: auto; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto;">
+    <div class="login-subtitle">Dashboard Executivo de Vendas</div>
+    
+    <div class="login-input-group">
+      <label for="username">Usuário</label>
+      <input type="text" id="username" placeholder="Seu usuário" required>
+    </div>
+    
+    <div class="login-input-group">
+      <label for="password">Senha</label>
+      <input type="password" id="password" placeholder="Sua senha" required>
+    </div>
+    
+    <button class="login-btn" id="login-submit-btn">Acessar Painel</button>
+    <div class="login-error" id="login-error-msg"></div>
+  </div>
+</div>
+
+<div id="main-content-wrap" style="display:none;">
+
+<div class="wrap">
+
+  <div class="header">
+    <div class="header-left">
+      <div class="brand">
+        <div class="brand-logo-box"><img class="brand-logo" src="assets/img/logo-header.png" alt="dr.hoje"></div>
+      </div>
+      <div class="header-titles">
+        <div class="header-kicker" id="hdrKicker">VISÃO EXECUTIVA</div>
+        <div class="header-title" id="hdrTitle">CARTEIRA DE BENEFICIÁRIOS</div>
+        <div class="header-subtitle" id="hdrSubtitle"></div>
+      </div>
+    </div>
+    <div class="date-chip">
+      <div class="lbl">POSIÇÃO EM</div>
+      <div class="val" id="hdrDate">--/--/----</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="1">Visão Executiva Vendas</button>
+    <button class="tab-btn" data-tab="2">Visão Executiva</button>
+    <button class="tab-btn" data-tab="3">Vidas Ativas por Produto</button>
+    <button class="tab-btn" data-tab="4">Faturamento</button>
+    <button class="tab-btn play-pause-btn" id="btnPlayPause" style="background: #16A085; color: white; border-color: #16A085; margin-left: auto;">⏸ Pausar</button>
+  </div>
+
+  <!-- PAGE 1 -->
+  <div class="panel active" id="panel-1">
+    <div class="row row-4" id="p1-kpis"></div>
+    <div class="row row-3-253">
+      <div class="card">
+        <div class="card-title">Composição da Carteira</div>
+        <div class="chart-box" style="height:170px;"><canvas id="p1DonutComposicao"></canvas></div>
+        <div class="legend-list" id="p1ComposicaoLegend"></div>
+        <div id="p1ComposicaoObs"></div>
+        <div class="card-subsection">
+          <div class="card-subtitle" id="p1ConsultorTitle">Vendas por Consultor</div>
+          <div class="donut-col">
+            <div class="chart-box"><canvas id="p1DonutConsultor"></canvas></div>
+            <div class="legend-list" id="p1ConsultorLegend" style="flex:1;"></div>
+          </div>
+          <div class="kpi-sub" style="margin-top:8px;">"VENDA DIRETA (SITE)" refere-se às vendas sem consultor identificado no cadastro.</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="p1IncDiaTitle">Inclusões Individual por Dia</div>
+        <div class="chart-box" style="height:150px;"><canvas id="p1BarInclusoes"></canvas></div>
+        <div class="entrada-hoje">
+          <div class="entrada-hoje-label">Entradas (Hoje)</div>
+          <div class="entrada-hoje-value" id="p1EntradaHojeValue">+0</div>
+          <div class="entrada-hoje-sub" id="p1EntradaHojeSub"></div>
+        </div>
+        <div class="entrada-hoje" style="margin-top: 10px;">
+          <div class="entrada-hoje-label">Entradas Acumuladas do Mês</div>
+          <div class="entrada-hoje-value" id="p1EntradaAcumuladoValue">+0</div>
+          <div class="entrada-hoje-sub" id="p1EntradaAcumuladoSub"></div>
+        </div>
+        <div class="destaques-list" id="p1Destaques"></div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="p1VendasTitle">Vendas Individual por Produto</div>
+        <div class="table-scroll"><table class="dash-table" id="p1VendasTable"></table></div>
+        <div class="rank-row" id="p1Ranking"></div>
+        <div class="stat-row" id="p1Stats"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="p1IncMesTipoTitle">Inclusões por Mês e Tipo</div>
+      <div class="table-scroll"><table class="dash-table dash-table-center" id="p1PivotMesTipo"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="p1ValorIncTitle">Valor das Inclusões por Mês e Tipo</div>
+      <div class="table-scroll"><table class="dash-table dash-table-center" id="p1PivotMesTipoValor"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="p1IncJunConsultorTitle">Inclusões de Junho/2026 por Consultor/Corretora</div>
+      <div class="table-scroll"><table class="dash-table dash-table-center" id="p1IncJunConsultorTable"></table></div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="p1IncJunDetalheTitle">Inclusões de Junho/2026 — Detalhamento por Beneficiário</div>
+      <div class="table-scroll"><table class="dash-table" id="p1IncJunDetalheTable"></table></div>
+    </div>
+    <div class="card">
+      <div class="footer-msg">
+        <div class="footer-badge">★</div>
+        <div>
+          <div class="footer-msg-title">MENSAGEM PARA DIRETORIA</div>
+          <div class="footer-msg-text" id="p1Mensagem"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 2 -->
+  <div class="panel" id="panel-2">
+    <div class="row row-5" id="p2-kpis"></div>
+    <div class="note-card" id="p2Note"></div>
+    <div class="row row-3-evo">
+      <div class="card">
+        <div class="card-title">Evolução Mensal — Inclusões x Exclusões</div>
+        <div class="chart-box" style="height:200px;"><canvas id="p2Evolucao"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="p2IncProdTitle">Inclusões por Produto</div>
+        <div class="donut-col">
+          <div class="chart-box"><canvas id="p2DonutInclusoes"></canvas></div>
+          <div class="legend-list" id="p2IncLegend" style="flex:1;"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="p2MotivosTitle">Principais Motivos de Exclusão</div>
+        <div class="donut-col">
+          <div class="chart-box"><canvas id="p2DonutMotivos"></canvas></div>
+          <div class="legend-list" id="p2MotLegend" style="flex:1;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="row row-2-table-list">
+      <div class="card">
+        <div class="card-title">Concentração da Carteira Empresarial — Top 5 Empresas</div>
+        <div class="table-scroll"><table class="dash-table dash-table-center" id="p2EmpresasTable"></table></div>
+        <div class="stat-row" id="p2Stats"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Resumo Executivo</div>
+        <div id="p2Resumo"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="footer-msg">
+        <div class="footer-badge">★</div>
+        <div>
+          <div class="footer-msg-title">MENSAGEM PARA DIRETORIA</div>
+          <div class="footer-msg-text" id="p2Mensagem"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3 -->
+  <div class="panel" id="panel-3">
+    <div class="row row-4" id="p3-kpis"></div>
+    <div class="row row-2-eq">
+      <div class="card">
+        <div class="card-title">Distribuição de Vidas Ativas — Adesão</div>
+        <div class="table-scroll"><table class="dash-table" id="p3AdesaoTable"></table></div>
+        <div class="donut-col" style="margin-top:12px;">
+          <div class="chart-box"><canvas id="p3DonutAdesao"></canvas></div>
+          <div class="legend-list" id="p3AdesaoLegend" style="flex:1;"></div>
+        </div>
+        <div class="destaque-callout" id="p3DestaqueAdesao"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Distribuição de Vidas Ativas — Empresarial</div>
+        <div class="table-scroll"><table class="dash-table" id="p3EmpresarialTable"></table></div>
+        <div class="donut-col" style="margin-top:12px;">
+          <div class="chart-box"><canvas id="p3DonutEmpresarial"></canvas></div>
+          <div class="legend-list" id="p3EmpresarialLegend" style="flex:1;"></div>
+        </div>
+        <div class="destaque-callout" id="p3DestaqueEmpresarial"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="footer-msg">
+        <div class="footer-badge">★</div>
+        <div>
+          <div class="footer-msg-title">RESUMO GERAL</div>
+          <div class="footer-msg-text" id="p3Mensagem"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 4 -->
+  <div class="panel" id="panel-4">
+    <div class="row row-6" id="p4-kpis"></div>
+    <div class="note-card" id="p4Note"></div>
+    <div class="row row-3-evo">
+      <div class="card">
+        <div class="card-title" id="p4EvoTitle">Evolução Mensal — Faturamento Gerado x Pago</div>
+        <div class="chart-box" style="height:200px;"><canvas id="p4Evolucao"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="p4SegTitle">Faturamento por Segmento — Gerado</div>
+        <div class="donut-col">
+          <div class="chart-box"><canvas id="p4DonutSegmento"></canvas></div>
+          <div class="legend-list" id="p4SegLegend" style="flex:1;"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="p4TopTitle">Top Produtos por Receita — Gerado</div>
+        <div class="donut-col">
+          <div class="chart-box"><canvas id="p4DonutTop"></canvas></div>
+          <div class="legend-list" id="p4TopLegend" style="flex:1;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="p4PivotGeradoTitle">Faturamento Gerado por Segmento — Mês a Mês</div>
+      <div class="table-scroll"><table class="dash-table dash-table-center" id="p4PivotGerado"></table></div>
+    </div>
+    <div class="row row-2-eq">
+      <div class="card">
+        <div class="card-title" id="p4EvoAdesaoTitle">Faturamento Mensal — Adesão (Gerado x Pago)</div>
+        <div class="chart-box" style="height:190px;"><canvas id="p4EvoAdesao"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="p4EvoEmpresarialTitle">Faturamento Mensal — Empresarial (Gerado x Pago)</div>
+        <div class="chart-box" style="height:190px;"><canvas id="p4EvoEmpresarial"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title" id="p4PivotPagoTitle">Faturamento Pago por Segmento — Mês a Mês</div>
+      <div class="table-scroll"><table class="dash-table dash-table-center" id="p4PivotPago"></table></div>
+    </div>
+    <div class="row row-2-eq">
+      <div class="card">
+        <div class="card-title" id="p4AdesaoTableTitle">Faturamento por Produto — Adesão</div>
+        <div class="table-scroll"><table class="dash-table" id="p4AdesaoTable"></table></div>
+        <div class="destaque-callout" id="p4DestaqueAdesao"></div>
+      </div>
+      <div class="card">
+        <div class="card-title" id="p4EmpresarialTableTitle">Faturamento por Produto — Empresarial</div>
+        <div class="table-scroll"><table class="dash-table" id="p4EmpresarialTable"></table></div>
+        <div class="destaque-callout" id="p4DestaqueEmpresarial"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="footer-msg">
+        <div class="footer-badge">★</div>
+        <div>
+          <div class="footer-msg-title">MENSAGEM PARA DIRETORIA</div>
+          <div class="footer-msg-text" id="p4Mensagem"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span id="footFonte">Fonte: Sistema de Gestão DR. HOJE</span>
+    <span id="footAtualizado">Dados atualizados em --/--/----</span>
+  </div>
+
+</div>
+
+<script src="assets/data/encrypted_payload.js"></script>
+<script src="assets/js/dashboard.js"></script>
+
+</div>
+</body>
+</html>
